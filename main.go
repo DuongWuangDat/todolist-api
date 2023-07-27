@@ -1,10 +1,14 @@
 package main
 
 import (
+	"github.com/DuongWuangDat/todolist-api/database"
 	"github.com/DuongWuangDat/todolist-api/routes"
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+	database.Connect()
+}
 func main() {
 	r := gin.Default()
 	r.GET("/tasks", routes.GetTasks)
