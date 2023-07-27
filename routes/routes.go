@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -12,7 +13,7 @@ import (
 func GetTasks(c *gin.Context) {
 	query := c.DefaultQuery("title", "")
 	var tasks []models.Task
-	if query != "" {
+	if query == "" {
 
 		err := database.Db.Find(&tasks).Error
 		if err != nil {
@@ -57,6 +58,7 @@ func CreateTask(c *gin.Context) {
 	var task models.Task
 	err := c.ShouldBindJSON(&task)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err,
 		})
@@ -66,6 +68,7 @@ func CreateTask(c *gin.Context) {
 	task.IsDone = false
 	err = database.Db.Create(&task).Error
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err,
 		})
